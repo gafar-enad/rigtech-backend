@@ -62,7 +62,18 @@ app.post("/api/chat", async (req, res) => {
     res.status(500).json({ error: "AI request failed" });
   }
 });
-
+pp.get("/api/config", (req, res) => {
+  res.json({
+    appName: "RIGTOUCH PRO",
+    apiBase: "https://rigtech-backend-1.onrender.com",
+    quickActions: [
+      { id: "drawworks_overheat", title: "Drawworks Overheating", prompt: "حلل أسباب overheating في drawworks وخطوات الفحص." },
+      { id: "topdrive_fault", title: "Top Drive Fault", prompt: "شخص أعطال top drive الكهربائية والميكانيكية وخطوات المعالجة." },
+      { id: "generator_sync", title: "Generator / Sync", prompt: "اشرح مشاكل تزامن المولدات وأسباب trip وخطوات التشخيص." }
+    ],
+    ui: { theme: "dark" }
+  });
+})
 // ✅ أهم سطر لـ Render
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
