@@ -62,7 +62,7 @@ app.post("/api/chat", async (req, res) => {
     res.status(500).json({ error: "AI request failed" });
   }
 });
-pp.get("/api/config", (req, res) => {
+app.get("/api/config", (req, res) => {
   res.json({
     appName: "RIGTOUCH PRO",
     apiBase: "https://rigtech-backend-1.onrender.com",
