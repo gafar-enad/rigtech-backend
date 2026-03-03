@@ -7,28 +7,46 @@ dotenv.config();
 
 const app = express();
 app.use(cors());
-app.use(express.json({ limit: "1mb" }));
+app.use(express.json());
 
+// ✅ مهم جدًا لـ Render
 const PORT = process.env.PORT || 8080;
+
+// API KEY
 const API_KEY = process.env.GEMINI_API_KEY;
 
-// ✅ جرّب بصيغة models/ لتجنب NOT_FOUND
+// MODEL (مع fallback آمن)
 const MODEL =
   process.env.GEMINI_MODEL?.trim() || "models/gemini-1.5-pro";
 
+// ---------- Health Check ----------
 app.get("/health", (req, res) => {
-  res.json({ status: "OK", model: MODEL });
+  res.json({
+    status: "OK",
+    model: MODEL,
+  });
 });
 
+// ---------- Root Test ----------
+app.get("/", (req, res) => {
+  res.send("RIGTECH BACKEND WORKING");
+});
+
+// ---------- Chat Endpoint ----------
 app.post("/api/chat", async (req, res) => {
   try {
-    const message = req.body?.message;
-
     if (!API_KEY) {
-      return res.status(500).json({ error: "Missing GEMINI_API_KEY in .env" });
+      return res
+        .status(500)
+        .json({ error: "Missing GEMINI_API_KEY in environment variables" });
     }
+
+    const message = req.body.message;
+
     if (!message || typeof message !== "string") {
-      return res.status(400).json({ error: "message is required (string)" });
+      return res
+        .status(400)
+        .json({ error: "message is required (string)" });
     }
 
     const genAI = new GoogleGenerativeAI(API_KEY);
@@ -38,18 +56,14 @@ app.post("/api/chat", async (req, res) => {
     const response = await result.response;
     const text = response.text();
 
-    return res.json({ reply: text || "(no text returned)" });
-  } catch (err) {
-    console.error("FULL AI ERROR:", err);
-    return res.status(500).json({
-      error: "AI request failed",
-      details: err?.message || String(err),
-    });
+    res.json({ reply: text });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "AI request failed" });
   }
 });
 
-// مهم لـ Render/Cloud
+// ✅ أهم سطر لـ Render
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`Using model: ${MODEL}`);
 });
