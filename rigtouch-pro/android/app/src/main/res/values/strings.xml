@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">RIGTOUCH PRO</string>
+    <string name="title_activity_main">RIGTOUCH PRO</string>
+    <string name="package_name">com.rigtouch.pro</string>
+    <string name="custom_url_scheme">com.rigtouch.pro</string>
+</resources>

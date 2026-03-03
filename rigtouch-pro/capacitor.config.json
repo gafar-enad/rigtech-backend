@@ -1,0 +1,9 @@
+{
+  "appId": "com.rigtouch.pro",
+  "appName": "RIGTOUCH PRO",
+  "webDir": "dist",
+  "server": {
+    "url": "https://ais-pre-m25ttn4pq2io6hy6feuhy6-246414742131.europe-west2.run.app",
+    "cleartext": false
+  }
+}
